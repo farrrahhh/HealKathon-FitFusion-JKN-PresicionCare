@@ -10,6 +10,21 @@ export default function Main(){
     const [bloodPressure,setBloodPressure] = useState('');
     const [bloodSugar, setBloodSugar] = useState('');
     const [cholesterol, setCholesterol] = useState('');
+    const router = useRouter();
+
+    const handleAnalysis = () => {
+        router.push('/main/analysis')
+    }
+    const handleInput = () => {
+        router.push('/main/input')
+    }
+    const handleReport = () => {
+        router.push('/main/report')
+
+    }
+    const handleSimpan = () => {
+
+    }
 
     return(
         <SafeAreaView style={styles.background}>
@@ -23,15 +38,15 @@ export default function Main(){
             <ScrollView contentContainerStyle={styles.centeredContainer}>
                 <View style={styles.container}>
                     <View style={styles.navigation}>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={handleAnalysis}>
                             <Image source={require('@/assets/images/analysis.png')} style={styles.navigationImg}/> 
                             <Text style={styles.navigationText}>Analysis</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={handleInput}>
                             <Image source={require('@/assets/images/input.png')} style={styles.navigationImg}/> 
                             <Text style={styles.navigationText}>Input</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={handleReport}>
                             <Image source={require('@/assets/images/report.png')} style={styles.navigationImg}/> 
                             <Text style={styles.navigationText}>Report</Text>
                         </TouchableOpacity>
@@ -45,6 +60,7 @@ export default function Main(){
                                 value={weight} 
                                 onChangeText={setWeight} 
                                 style={styles.input} 
+                                keyboardType='numeric'
                             />
                             </View>
                             <View style={styles.row}>
@@ -53,6 +69,7 @@ export default function Main(){
                                 value={height} 
                                 onChangeText={setHeight} 
                                 style={styles.input} 
+                                keyboardType='numeric'
                             />
                             </View>
 
@@ -61,7 +78,8 @@ export default function Main(){
                             <TextInput 
                                 value={bloodPressure} 
                                 onChangeText={setBloodPressure} 
-                                style={styles.input} 
+                                style={styles.input}
+                                keyboardType='numeric' 
                             />
                             </View>
 
@@ -70,7 +88,8 @@ export default function Main(){
                             <TextInput 
                                 value={bloodSugar} 
                                 onChangeText={setBloodSugar} 
-                                style={styles.input} 
+                                style={styles.input}
+                                keyboardType='numeric' 
                             />
                             </View>
 
@@ -79,11 +98,12 @@ export default function Main(){
                             <TextInput 
                                 value={cholesterol} 
                                 onChangeText={setCholesterol} 
-                                style={styles.input} 
+                                style={styles.input}
+                                keyboardType='numeric' 
                             />
                             </View>
                         </View>
-                            <TouchableOpacity style={styles.simpanButton}>
+                            <TouchableOpacity style={styles.simpanButton} onPress={handleSimpan}>
                                 <Text style={styles.buttonText}>Simpan</Text>
                             </TouchableOpacity>
                         </View>
