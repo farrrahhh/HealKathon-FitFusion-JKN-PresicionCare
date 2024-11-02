@@ -1,7 +1,7 @@
 import { StyleSheet,Text, View, Image } from "react-native";
-import LoadingScreen from "@/app/LoadingScreen";
+import Splash from "./splash";
 export default function Index() {
   return (
-    <LoadingScreen/>
+    <Splash/>
   );
 }
