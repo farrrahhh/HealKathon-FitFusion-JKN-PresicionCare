@@ -49,7 +49,10 @@ export default function SignIn() {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
-        <Text style={styles.title}>Join Us!</Text>
+        <Text style={styles.title}>Hi!</Text>
+        <Text style={styles.title2}>Welcome Back!</Text>
+        
+
         <View style={styles.logoItem}>
           <Image
             source={require('@/assets/images/JKNPrecisionCare_Logo.png')}
@@ -103,11 +106,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  title: {
+  title2: {
     fontFamily: 'Poppins-Semibold', // Pastikan font ini sudah di-load
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#333',
+  },
+  title: {
+    fontFamily: 'Poppins-Semibold', // Pastikan font ini sudah di-load
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 5,
     color: '#333',
   },
   logoItem: {
