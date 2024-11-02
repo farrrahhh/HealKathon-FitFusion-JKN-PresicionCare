@@ -48,7 +48,7 @@ export default function Splash() {
     <View
       style={{
         position: "absolute",
-        bottom: 0,
+        bottom: 10,
         width: "100%",
         alignItems: "center",
         paddingBottom: 10,
