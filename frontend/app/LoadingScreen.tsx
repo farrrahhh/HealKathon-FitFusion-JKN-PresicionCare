@@ -5,9 +5,9 @@ export default function LoadingScreen(){
     return(
       <View
       style={{
-        display:"flex",
         justifyContent:"center",
-        alignContent:"center"
+        alignItems:"center"
+        
       }}
       >
         <View
