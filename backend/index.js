@@ -1,8 +1,11 @@
 const express = require("express");
 const mysql = require("mysql2/promise");
 const bcrypt = require("bcrypt");
+const bodyParser = require("body-parser");
+const healthDataRoutes = require("./routes/healthDataRoutes"); // Pastikan rute ini ada
 const app = express();
-app.use(express.json());
+
+app.use(bodyParser.json()); // Menggunakan bodyParser untuk mengurai JSON
 
 const MYSQL_URL = process.env.MYSQL_URL || "mysql://root:ononaixqAJRZzgPYMajKPNiThASOzssO@autorack.proxy.rlwy.net:29792/railway";
 
@@ -97,6 +100,9 @@ app.post("/api/signin", async (req, res) => {
     }
   }
 });
+
+// Rute Health Data
+app.use("/api/health-data", healthDataRoutes);
 
 // Jalankan server
 const PORT = process.env.PORT || 3000;
