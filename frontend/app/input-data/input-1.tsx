@@ -69,7 +69,58 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
       [condition]: !prev[condition],
     }));
   };
+  const handleSubmit = async () => {
+    const data = {
+      name,
+      jknNumber,
+      age,
+      gender,
+      medicalHistory,
+      isUnderMedication,
+      medicationDetails,
+      familyHistory,
+      hasAllergy,
+      allergyDetails,
+      exerciseFrequency,
+      smokingStatus,
+      alcoholConsumption,
+      dietDetails,
+      dietDescription,
+      weight,
+      height,
+      bloodPressure,
+      bloodSugar,
+      cholesterol,
+      hepatitisBVaccine,
+      influenzaVaccine,
+      mentalHealthHistory,
+      mentalHealthDescription,
+      geneticData,
+      geneticDescription,
+    };
 
+    try {
+      const response = await fetch('YOUR_API_ENDPOINT', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit data');
+      }
+
+      // Optionally handle success
+      const result = await response.json();
+      console.log('Data submitted successfully:', result);
+      // Redirect or notify the user
+      router.push('/success'); // Replace with your success page route
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -337,8 +388,9 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
         </View>
 
 
-        <TouchableOpacity style={styles.submitButton}>
-          <Text style={styles.buttonText}>Kumpulkan</Text>
+          {/* Submit Button */}
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Kumpulkan</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
