@@ -3,11 +3,18 @@ import React from "react";
 
 export default function LoadingScreen(){
     return(
+      <View
+      style={{
+        display:"flex",
+        justifyContent:"center",
+        alignContent:"center"
+      }}
+      >
         <View
         style={{
-          flex: 1,
           justifyContent: "center",
           alignItems: "center",
+
         }}
       >
         <Image
@@ -26,7 +33,7 @@ export default function LoadingScreen(){
             fontFamily:'Poppins-Regular'
           }
         }>Lebih Baik.</Text>
-  
+      </View>
   
         <View
         style={
@@ -40,8 +47,6 @@ export default function LoadingScreen(){
             teste
           </Text>
         </View>
-        
-  
       </View>
     );
 }
