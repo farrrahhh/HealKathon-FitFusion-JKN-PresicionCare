@@ -30,7 +30,7 @@ export default function SignUp() {
 
       if (response.status === 201) {
         console.log("Sign Up successful, redirecting to Sign In");
-        router.push('/sign-in'); // Arahkan ke halaman Sign In setelah berhasil sign up
+        router.push('./input-data/input-1'); // Arahkan ke halaman Sign In setelah berhasil sign up
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
