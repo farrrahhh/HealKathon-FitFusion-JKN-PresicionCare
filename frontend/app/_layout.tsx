@@ -34,7 +34,7 @@ export default function HomeLayout() {
   }
   
   return (
-    <Stack>
+    <Stack screenOptions={{headerShown:false}}>
       {/* Tambahkan kode untuk menampilkan halaman utama aplikasi */}
       {/* Contoh: */}
       {/* <Stack.Screen name="Main" component={Main} /> */}

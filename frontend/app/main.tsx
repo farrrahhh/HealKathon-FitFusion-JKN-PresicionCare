@@ -239,4 +239,8 @@ const styles = StyleSheet.create({
     centeredContainer:{
         flexGrow:1,
     },
+    strongArm : {
+        width:31,
+        height:31,
+    },
 });
