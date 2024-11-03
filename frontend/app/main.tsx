@@ -29,7 +29,7 @@ export default function Main(){
     }
 
     const handleLogout = () => {
-        setShowLogoutModal(true);
+        router.replace('/sign-in'); // Replace with the path to your sign-in screen
     }
 
     const confirmLogout = () => {

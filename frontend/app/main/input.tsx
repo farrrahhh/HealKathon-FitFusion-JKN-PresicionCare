@@ -3,7 +3,7 @@ import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Imag
 import { Checkbox } from 'expo-checkbox'; // Menggunakan expo-checkbox
 import { useRouter } from 'expo-router'; // Pastikan untuk menambahkan ini
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function HealthDataInput() {
   const [userId, setUserId] = useState('');
   const [name, setName] = useState('');
@@ -176,11 +176,18 @@ export default function HealthDataInput() {
     } catch (error) {
       console.error('Error saving health data:', error);
     }
-  };
-
+  };// To get padding for safe area
+  const insets = useSafeAreaInsets(); // To get padding for safe area
+  const handleBack = () => {
+    router.push('../main');
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <TouchableOpacity style={[styles.backButton, { top: insets.top - 60 }]} onPress={handleBack}>
+                <Image source={require('@/assets/images/backButton.png')} style={styles.backButtonImage} />
+            </TouchableOpacity>
+
         <Text style={styles.title}>Input Data Kesehatan</Text>
 
         <View style={styles.logoItem}>
@@ -529,6 +536,15 @@ export default function HealthDataInput() {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    position: 'absolute',
+    left: 10,
+    zIndex: 1,
+  },
+  backButtonImage: {
+    width: 50,
+    height: 50,
+  },
   logoItem: {
     alignItems: 'center',
     marginBottom: 20,
@@ -542,14 +558,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center', // Center the title
   },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#EFF8FF',
   },
   sectionContainer: {
     marginBottom: 20,
+    paddingHorizontal: 10, // Add horizontal padding
   },
   label: {
     fontSize: 16,
@@ -562,10 +580,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+    marginHorizontal: 10, // Add horizontal margin
   },
   buttonContainer: {
     alignItems: 'center',
     marginTop: 20,
+    width: '85%',
+    alignSelf: 'center',
   },
   button: {
     backgroundColor: '#273A96',
@@ -573,6 +594,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '100%',
     alignItems: 'center',
+    marginHorizontal: 10, // Add horizontal margin
   },
   buttonText: {
     color: '#fff',
@@ -582,11 +604,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    marginHorizontal: 10, // Add horizontal margin
   },
   genderContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginBottom: 10,
+    paddingHorizontal: 10, // Add horizontal padding
   },
   scrollContainer: {
     paddingBottom: 20,
@@ -605,5 +629,3 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
-
-// export default Input3;
