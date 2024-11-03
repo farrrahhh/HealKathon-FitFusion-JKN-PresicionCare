@@ -59,10 +59,11 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
   const router = useRouter(); // Hook untuk navigasi
 
   useEffect(() => {
-    // Assuming you have a function to get the user ID from sign up
     const fetchUserId = async () => {
-      const id = await getUserIdFromSignUp();
-      setUserId(id);
+      const id = await AsyncStorage.getItem('userId');
+      if (id) {
+        setUserId(id);
+      }
     };
 
     fetchUserId();
@@ -114,7 +115,7 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/health-data', {
+      const response = await fetch('http://192.168.1.10:3000/api/health-data', { // Replace with your machine's IP address
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -173,11 +174,11 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
         <View style={styles.sectionContainer}>
           <Text style={styles.label}>Jenis Kelamin:</Text>
           <View style={styles.genderContainer}>
-            <TouchableOpacity onPress={() => setGender('Laki-laki')}>
-              <Text style={[styles.genderOption, gender === 'Laki-laki' && styles.selectedOption]}>Laki-laki</Text>
+            <TouchableOpacity onPress={() => setGender('male')}>
+              <Text style={[styles.genderOption, gender === 'male' && styles.selectedOption]}>Laki-laki</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setGender('Perempuan')}>
-              <Text style={[styles.genderOption, gender === 'Perempuan' && styles.selectedOption]}>Perempuan</Text>
+            <TouchableOpacity onPress={() => setGender('female')}>
+              <Text style={[styles.genderOption, gender === 'female' && styles.selectedOption]}>Perempuan</Text>
             </TouchableOpacity>
           </View>
         </View>

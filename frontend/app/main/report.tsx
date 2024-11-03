@@ -91,6 +91,8 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     fontWeight: 'bold', 
     color: 'white',
+    fontFamily: 'Poppins-Semibold',
+    
   },
   
   content: { padding: 16 },
@@ -99,13 +101,16 @@ const styles = StyleSheet.create({
     fontSize: 18, 
     fontWeight: 'bold', 
     marginTop: 20, 
-    marginBottom: 8 
+    marginBottom: 8, 
+    color: '#333',
+    fontFamily: 'Poppins-Semibold'
   },
   
   infoText: { 
     fontSize: 16, 
     color: '#333', 
-    marginBottom: 4 
+    marginBottom: 4,
+    fontFamily: 'Poppins-Regular'
   },
   
   sendButton: {

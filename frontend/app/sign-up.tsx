@@ -24,17 +24,17 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/signup', {
+      const response = await axios.post('http://192.168.1.10:3000/api/signup', {  // Replace localhost with your IP
         username,
         password,
       });
 
       if (response.status === 201) {
-        const userId = response.data.userId; // Ensure userId is retrieved from the response
+        const userId = response.data.userId;
         if (userId) {
-          await AsyncStorage.setItem('userId', userId); // Store the user ID in AsyncStorage
+          await AsyncStorage.setItem('userId', String(userId)); // Store the user ID in AsyncStorage
           console.log("Sign Up successful, redirecting to input data page");
-          router.push('./input-data/input-1'); // Redirect to input data page after successful sign up
+          router.push('./input-data/input-1');
         } else {
           throw new Error('User ID is missing in the response');
         }
@@ -43,7 +43,7 @@ export default function SignUp() {
       if (axios.isAxiosError(error) && error.response) {
         // Server responded with a status other than 200 range
         if (error.response.status === 409) {
-          setErrorMessage('Username already exists.'); // Code 409 for conflict
+          setErrorMessage('Username already exists.');
         } else {
           setErrorMessage('Sign Up failed. Please try again.');
         }
