@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { Checkbox } from 'expo-checkbox'; // Menggunakan expo-checkbox
 import { useRouter } from 'expo-router'; // Pastikan untuk menambahkan ini
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HealthDataInput() {
+  const [userId, setUserId] = useState('');
   const [name, setName] = useState('');
   const [jknNumber, setJknNumber] = useState('');
   const [age, setAge] = useState('');
@@ -56,6 +58,17 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
 
   const router = useRouter(); // Hook untuk navigasi
 
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const id = await AsyncStorage.getItem('userId');
+      if (id) {
+        setUserId(id);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
   const toggleMedicalHistory = (condition: MedicalCondition) => {
     setMedicalHistory((prev) => ({
       ...prev,
@@ -69,8 +82,10 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
       [condition]: !prev[condition],
     }));
   };
+  
   const handleSubmit = async () => {
     const data = {
+      userId,
       name,
       jknNumber,
       age,
@@ -100,7 +115,7 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
     };
 
     try {
-      const response = await fetch('YOUR_API_ENDPOINT', {
+      const response = await fetch('http://192.168.1.10:3000/api/health-data', { // Replace with your machine's IP address
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,16 +124,14 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit data');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to save health data');
       }
 
-      // Optionally handle success
-      const result = await response.json();
-      console.log('Data submitted successfully:', result);
-      // Redirect or notify the user
-      router.push('/success'); // Replace with your success page route
+      console.log('Health data saved successfully');
+      router.push('../main');
     } catch (error) {
-      console.error('Error submitting data:', error);
+      console.error('Error saving health data:', error);
     }
   };
 
@@ -161,11 +174,11 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
         <View style={styles.sectionContainer}>
           <Text style={styles.label}>Jenis Kelamin:</Text>
           <View style={styles.genderContainer}>
-            <TouchableOpacity onPress={() => setGender('Laki-laki')}>
-              <Text style={[styles.genderOption, gender === 'Laki-laki' && styles.selectedOption]}>Laki-laki</Text>
+            <TouchableOpacity onPress={() => setGender('male')}>
+              <Text style={[styles.genderOption, gender === 'male' && styles.selectedOption]}>Laki-laki</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setGender('Perempuan')}>
-              <Text style={[styles.genderOption, gender === 'Perempuan' && styles.selectedOption]}>Perempuan</Text>
+            <TouchableOpacity onPress={() => setGender('female')}>
+              <Text style={[styles.genderOption, gender === 'female' && styles.selectedOption]}>Perempuan</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -390,7 +403,7 @@ type FamilyMedicalCondition = 'hypertension' | 'diabetes' | 'heartDisease' | 'ca
 
           {/* Submit Button */}
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Kumpulkan</Text>
+          <Text style={styles.submitButton}>Kumpulkan</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -483,3 +496,14 @@ const styles = StyleSheet.create({
 
   },
 });
+
+async function getUserIdFromSignUp(): Promise<string> {
+  return new Promise(async (resolve) => {
+    const userId = await AsyncStorage.getItem('userId');
+    if (userId) {
+      resolve(userId);
+    } else {
+      resolve(''); 
+    }
+  });
+}

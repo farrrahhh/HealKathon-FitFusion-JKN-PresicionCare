@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Animated } from 'react-native';
 import axios from 'axios';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -23,20 +24,26 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/signup', {
+      const response = await axios.post('http://192.168.1.10:3000/api/signup', {  // Replace localhost with your IP
         username,
         password,
       });
 
       if (response.status === 201) {
-        console.log("Sign Up successful, redirecting to Sign In");
-        router.push('./input-data/input-1'); // Arahkan ke halaman Sign In setelah berhasil sign up
+        const userId = response.data.userId;
+        if (userId) {
+          await AsyncStorage.setItem('userId', String(userId)); // Store the user ID in AsyncStorage
+          console.log("Sign Up successful, redirecting to input data page");
+          router.push('./input-data/input-1');
+        } else {
+          throw new Error('User ID is missing in the response');
+        }
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         // Server responded with a status other than 200 range
         if (error.response.status === 409) {
-          setErrorMessage('Username already exists.'); // Kode 409 untuk conflict
+          setErrorMessage('Username already exists.');
         } else {
           setErrorMessage('Sign Up failed. Please try again.');
         }
