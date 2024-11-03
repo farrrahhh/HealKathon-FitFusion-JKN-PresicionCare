@@ -8,7 +8,7 @@ Merupakan Mobile App yang memungkinkan penggunanya mendapatkan analisis risiko p
 
 
 
-## Set up 
+## Run Program
 
 - Clone the project
 
