@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Animated, ScrollView } from 'react-native';
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Animated, ScrollView, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Main(){
@@ -11,6 +11,8 @@ export default function Main(){
     const [bloodSugar, setBloodSugar] = useState('');
     const [cholesterol, setCholesterol] = useState('');
     const router = useRouter();
+
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const handleAnalysis = () => {
         router.push('/main/analysis')
@@ -26,8 +28,41 @@ export default function Main(){
 
     }
 
+    const handleLogout = () => {
+        setShowLogoutModal(true);
+    }
+
+    const confirmLogout = () => {
+        setShowLogoutModal(false); // Hide the modal
+        router.replace('/sign-in'); // Replace with the path to your sign-in screen
+    }
+
     return(
         <SafeAreaView style={styles.background}>
+                        {/* Logout confirmation modal */}
+            {/* Logout confirmation modal */}
+            <Modal
+                transparent={true}
+                visible={showLogoutModal}
+                animationType="slide"
+                onRequestClose={() => setShowLogoutModal(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.modalTitle}>Confirm Logout</Text>
+                        <Text style={styles.modalMessage}>Are you sure you want to log out?</Text>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity style={styles.confirmButton} onPress={confirmLogout}>
+                                <Text style={styles.confirmButtonText}>Yes</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.cancelButton} onPress={() => setShowLogoutModal(false)}>
+                                <Text style={styles.cancelButtonText}>No</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
             <View style={styles.top}>
                 <View style={styles.topText}>
                     <Text style={styles.nameText}>Hi, {name}</Text>
@@ -107,7 +142,10 @@ export default function Main(){
                                 <Text style={styles.buttonText}>Simpan</Text>
                             </TouchableOpacity>
                         </View>
-
+                                            {/* Logout button */}
+                        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                            <Image source={require('@/assets/images/logoutbutton.png')} style={styles.logoutIcon}/>
+                        </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -242,5 +280,71 @@ const styles = StyleSheet.create({
     strongArm : {
         width:31,
         height:31,
+    },
+    logoutButton: {
+        position:'absolute',
+        bottom: 20,
+        left:15
+    },
+    logoutIcon: {
+        height:30,
+        width:35,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContainer: {
+        width: '80%',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    modalMessage: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    confirmButton: {
+        flex: 1,
+        backgroundColor: '#273A96',
+        paddingVertical: 10,
+        borderRadius: 5,
+        marginHorizontal: 5,
+        alignItems: 'center',
+    },
+    confirmButtonText: {
+        color: 'white',
+        fontSize: 16,
+    },
+    cancelButton: {
+        flex: 1,
+        backgroundColor: '#ccc',
+        paddingVertical: 10,
+        borderRadius: 5,
+        marginHorizontal: 5,
+        alignItems: 'center',
+    },
+    cancelButtonText: {
+        color: '#333',
+        fontSize: 16,
     },
 });

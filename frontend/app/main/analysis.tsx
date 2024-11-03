@@ -24,8 +24,8 @@ export default function Analysis() {
             factor: ['Riwayat hipertensi', 'Riwayat diabetes tipe', 'BMI: 28', 'Riwayat keluarga diabetes', 'Riwayat keluarg jantung']
         },
     ] 
-    const recommendation = ['Lakukan pemeriksaan kesehatan secara berkala, ikuti pola makan sehat, dan berolahraga minimal 30 menit sehari.'];
-    const preventiveAction: string[] = [];
+    const recommendation : string[] = ['Lakukan pemeriksaan kesehatan secara berkala, ikuti pola makan sehat, dan berolahraga minimal 30 menit sehari.'];
+    const preventiveAction: string[] = ['Pemeriksaan Rutin: Cek gula darah dan tekanan darah setiap 3 bulan.','Pola Makan Sehat: Konsumsi makanan rendah gula, garam, dan lemak jenuh. Konsultasi dengan ahli gizi jika perlu.','Olahraga Teratur: Lakukan minimal 150 menit aktivitas fisik per minggu.','Kelola Stres: Praktekkan teknik relaksasi seperti meditasi atau yoga.'];
 
     risk.sort((a,b) => b.level - a.level);
 
