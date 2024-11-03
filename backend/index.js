@@ -69,7 +69,7 @@ app.post("/api/signin", async (req, res) => {
   try {
     connection = await connectToDatabase();
 
-    // Ambil pengguna berdasarkan username
+    // Fetch user by username
     console.log("Fetching user for username:", username);
     const [rows] = await connection.execute("SELECT * FROM Users WHERE username = ?", [username]);
 
@@ -80,7 +80,7 @@ app.post("/api/signin", async (req, res) => {
 
     const user = rows[0];
 
-    // Bandingkan password
+    // Compare password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       console.log("Invalid password for username:", username);
@@ -94,7 +94,7 @@ app.post("/api/signin", async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   } finally {
     if (connection) {
-      await connection.end(); // Pastikan koneksi ditutup
+      await connection.end(); // Ensure the connection is closed
     }
   }
 });

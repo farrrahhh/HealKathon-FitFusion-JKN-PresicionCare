@@ -17,24 +17,27 @@ export default function SignIn() {
       const response = await axios.post('http://localhost:3000/api/signin', {
         username,
         password,
-      });
+      }, { timeout: 5000 }); // Set timeout to 5 seconds
+
       if (response.status === 200) {
         console.log(response.data);
         router.push('/main'); // Arahkan ke halaman utama jika login berhasil
       }
     } catch (error) {
-      const err = error as any;
-      if (err.response) {
-        // Server responded with a status other than 200 range
-        setErrorMessage('Invalid username or password');
-      } else if (err.request) {
-        // Request was made but no response received
-        setErrorMessage('Network error. Please try again later.');
+      if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          setErrorMessage('Request timed out. Please try again.');
+        } else if (error.response) {
+          // Server responded with a status other than 200 range
+          setErrorMessage('Invalid username or password');
+        } else {
+          // Network or other errors
+          setErrorMessage('Network error. Please try again later.');
+        }
       } else {
-        // Something else happened
         setErrorMessage('An unexpected error occurred.');
       }
-      console.error(err);
+      console.error("Sign In error:", error);
     }
   };
 

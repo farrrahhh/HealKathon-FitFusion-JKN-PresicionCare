@@ -27,7 +27,7 @@ export default function SignUp() {
       const response = await axios.post('http://192.168.1.10:3000/api/signup', {  // Replace localhost with your IP
         username,
         password,
-      });
+      }, { timeout: 5000 }); // Set timeout to 5 seconds
 
       if (response.status === 201) {
         const userId = response.data.userId;
@@ -40,16 +40,22 @@ export default function SignUp() {
         }
       }
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        // Server responded with a status other than 200 range
-        if (error.response.status === 409) {
-          setErrorMessage('Username already exists.');
+      if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          setErrorMessage('Request timed out. Please try again.');
+        } else if (error.response) {
+          // Server responded with a status other than 200 range
+          if (error.response.status === 409) {
+            setErrorMessage('Username already exists.');
+          } else {
+            setErrorMessage('Sign Up failed. Please try again.');
+          }
         } else {
-          setErrorMessage('Sign Up failed. Please try again.');
+          // Network or other errors
+          setErrorMessage('An error occurred. Please check your network connection.');
         }
       } else {
-        // Network or other errors
-        setErrorMessage('An error occurred. Please check your network connection.');
+        setErrorMessage('An unexpected error occurred.');
       }
       console.error("Sign Up error:", error);
     }

@@ -127,6 +127,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'absolute',
+        alignSelf: 'center',
     },
     precision: {
         color: '#273A96',
@@ -165,6 +167,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexGrow: 1,
         paddingBottom: 20,
+        marginTop:40,
     },
     highlightRisk: {
         padding: 15,
