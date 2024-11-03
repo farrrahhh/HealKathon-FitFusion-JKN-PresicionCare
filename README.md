@@ -10,46 +10,45 @@ Merupakan Mobile App yang memungkinkan penggunanya mendapatkan analisis risiko p
 
 ## Set up 
 
-Clone the project
+- Clone the project
 
 ```bash
   git clone https://github.com/farrrahhh/HealKathon-FitFusion-JKN-PresicionCare.git
 ```
 
-Go to the backend directory
+- Go to the backend directory
 
 ```bash
   cd backend
 ```
 
-Install dependencies
+- Install dependencies
 
 ```bash
   npm install
 ```
 
-Start the server
+- Start the server
 
 ```bash
   node index.js
 ```
 
-Open Another Terminal
-```bash
-```
+- Open Different Terminal
 
-Go to the frontend directory
+
+- Go to the frontend directory
 ```bash
     cd frontend
 ```
 
-Install dependencies
+- Install dependencies
 
 ```bash
   npm install
 ```
 
-Start the server
+- Start the program
 
 ```bash
   npx expo start -c
