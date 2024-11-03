@@ -1,11 +1,8 @@
 const express = require("express");
 const mysql = require("mysql2/promise");
 const bcrypt = require("bcrypt");
-const bodyParser = require("body-parser");
-const healthDataRoutes = require("./routes/healthDataRoutes"); // Pastikan rute ini ada
 const app = express();
-
-app.use(bodyParser.json()); // Menggunakan bodyParser untuk mengurai JSON
+app.use(express.json());
 
 const MYSQL_URL = process.env.MYSQL_URL || "mysql://root:ononaixqAJRZzgPYMajKPNiThASOzssO@autorack.proxy.rlwy.net:29792/railway";
 
@@ -45,10 +42,11 @@ app.post("/api/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Simpan pengguna baru
-    await connection.execute("INSERT INTO Users (username, password) VALUES (?, ?)", [username, hashedPassword]);
+    const [result] = await connection.execute("INSERT INTO Users (username, password) VALUES (?, ?)", [username, hashedPassword]);
+    const userId = result.insertId; // Get the inserted user ID
     console.log("User created successfully:", username);
 
-    res.status(201).json({ message: "User created successfully." });
+    res.status(201).json({ message: "User created successfully.", userId }); // Include userId in the response
   } catch (error) {
     console.error("Sign up error:", error);
     res.status(500).json({ message: "Internal server error." });
@@ -101,8 +99,116 @@ app.post("/api/signin", async (req, res) => {
   }
 });
 
-// Rute Health Data
-app.use("/api/health-data", healthDataRoutes);
+// Rute untuk menyimpan data kesehatan
+app.post("/api/health-data", async (req, res) => {
+  const {
+    userId,
+    name,
+    jknNumber,
+    age,
+    gender,
+    medicalHistory,
+    isUnderMedication,
+    medicationDetails,
+    familyHistory,
+    hasAllergy,
+    allergyDetails,
+    exerciseFrequency,
+    smokingStatus,
+    alcoholConsumption,
+    dietDetails,
+    dietDescription,
+    weight,
+    height,
+    bloodPressure,
+    bloodSugar,
+    cholesterol,
+    hepatitisBVaccine,
+    influenzaVaccine,
+    mentalHealthHistory,
+    mentalHealthDescription,
+    geneticData,
+    geneticDescription,
+  } = req.body;
+
+  let connection;
+  try {
+    connection = await connectToDatabase();
+    await connection.beginTransaction(); // Start transaction
+
+    // Check for duplicate jkn_number
+    const [existingJkn] = await connection.execute("SELECT * FROM Personal_Informations WHERE jkn_number = ?", [jknNumber]);
+    if (existingJkn.length > 0) {
+      await connection.rollback(); // Rollback transaction
+      return res.status(409).json({ message: "JKN number already exists." });
+    }
+
+    // Insert into Personal_Informations
+    await connection.execute(`INSERT INTO Personal_Informations (id_user, name, jkn_number, age, gender) VALUES (?, ?, ?, ?, ?)`, [userId, name, jknNumber, age, gender]);
+
+    // Insert into Medical_History
+    await connection.execute(`INSERT INTO Medical_History (id_user, hypertension, diabetes, high_cholesterol, heart_disease, asthma, kidney_disease, on_medication, medication_details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
+      userId,
+      medicalHistory.hypertension,
+      medicalHistory.diabetes,
+      medicalHistory.cholesterol,
+      medicalHistory.heartDisease,
+      medicalHistory.asthma,
+      medicalHistory.kidneyDisease,
+      isUnderMedication,
+      medicationDetails,
+    ]);
+
+    // Insert into Lifestyle_Activity
+    await connection.execute(`INSERT INTO Lifestyle_Activity (id_user, exercise_frequency, smoking_status, alcohol_consumption, has_diet, diet_details) VALUES (?, ?, ?, ?, ?, ?)`, [
+      userId,
+      exerciseFrequency,
+      smokingStatus,
+      alcoholConsumption,
+      dietDetails,
+      dietDescription,
+    ]);
+
+    // Insert into Allergies
+    await connection.execute(`INSERT INTO Allergies (id_user, has_allergy, allergy_details) VALUES (?, ?, ?)`, [userId, hasAllergy, allergyDetails]);
+
+    // Insert into Vaccination_Status
+    await connection.execute(`INSERT INTO Vaccination_Status (id_user, hepatitis, influenza) VALUES (?, ?, ?)`, [userId, hepatitisBVaccine ? "Yes" : "No", influenzaVaccine ? "Yes" : "No"]);
+
+    // Insert into Mental_Health_History
+    await connection.execute(`INSERT INTO Mental_Health_History (id_user, has_mental_health_condition, condition_details) VALUES (?, ?, ?)`, [userId, mentalHealthHistory, mentalHealthDescription]);
+
+    // Insert into Genetic_Data
+    await connection.execute(`INSERT INTO Genetic_Data (id_user, has_genetic_data, genetic_data_details) VALUES (?, ?, ?)`, [userId, geneticData, geneticDescription]);
+
+    // Insert into Health_Measurements
+    await connection.execute(`INSERT INTO Health_Measurements (id_user, weight, height, blood_pressure, blood_sugar, cholesterol) VALUES (?, ?, ?, ?, ?, ?)`, [userId, weight, height, bloodPressure, bloodSugar, cholesterol]);
+
+    // Insert into Family_History
+    await connection.execute(`INSERT INTO Family_History (user_id, hypertension, diabetes, heart_disease, cancer) VALUES (?, ?, ?, ?, ?)`, [
+      userId,
+      familyHistory.hypertension,
+      familyHistory.diabetes,
+      familyHistory.heartDisease,
+      familyHistory.cancer,
+    ]);
+
+    await connection.commit(); // Commit transaction
+
+    console.log("Health data saved successfully for user:", userId);
+    res.status(201).json({ message: "Health data saved successfully." });
+  } catch (error) {
+    if (connection) {
+      await connection.rollback(); // Rollback transaction on error
+    }
+    console.error("Error saving health data:", error);
+    res.status(500).json({ message: "Internal server error." });
+  } finally {
+    if (connection) {
+      await connection.end();
+    }
+  }
+});
 
 // Jalankan server
 const PORT = process.env.PORT || 3000;
