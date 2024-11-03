@@ -8,17 +8,49 @@ Merupakan Mobile App yang memungkinkan penggunanya mendapatkan analisis risiko p
 
 
 
-## Cara menjalankan program
+## Set up 
 
-- Pastikan komputer telah terinstal node.js dan npm.
-- Setelah melakukan clone, buka terminal dan masukkan command "cd backend".
-- Jalankan command "npm install", tunggu sampai seluruh modul ter-install.
-- Setelah selesai, jalankan command "node index.js
-dan akan muncul pesan berikut :"Server is running on port 3000".
-- Setelah itu, buka terminal baru dan masukkan command "cd frontend".
-- Jalankan command "npm install", tunggu sampai seluruh modules terinstall.
-- Setelah selesai, jalankan command "npx expo start" .
-- Penggunaan dapat melalui android studio/smartphone yang terinstall aplikasi 'Expo Go' dan dalam koneksi Wi-fi/Hotspot yang sama dengan pc/laptop yang digunakan.
-- ketik command 'a' pada terminal jika menggunakan android studio.
-- jika menggunakan smartphone, buka aplikasi expo go, pilih opsi 'Scan QR code' dan scan barcode yang ditampilkan pada terminal.
-- Aplikasi JKNPrecisionCare sudah bisa dijalankan dan digunakan.
+Clone the project
+
+```bash
+  git clone https://github.com/farrrahhh/HealKathon-FitFusion-JKN-PresicionCare.git
+```
+
+Go to the backend directory
+
+```bash
+  cd backend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  node index.js
+```
+
+Open Another Terminal
+```bash
+```
+
+Go to the frontend directory
+```bash
+    cd frontend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npx expo start -c
+```
