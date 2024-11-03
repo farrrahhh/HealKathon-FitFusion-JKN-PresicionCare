@@ -20,7 +20,7 @@ export default function SignIn() {
       });
       if (response.status === 200) {
         console.log(response.data);
-        router.push('/main'); // Arahkan ke halaman utama jika login berhasil
+        router.replace('/main'); // Arahkan ke halaman utama jika login berhasil
       }
     } catch (error) {
       setErrorMessage('Invalid username or password');

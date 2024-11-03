@@ -32,7 +32,7 @@ export default function Analysis() {
     const [highlightedvalue, ...otherRisks] = risk;
 
     const handleBack = () => {
-        router.push('../main');
+        router.back();
     }
 
     return (

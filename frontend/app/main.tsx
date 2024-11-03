@@ -31,7 +31,7 @@ export default function Main(){
             <View style={styles.top}>
                 <View style={styles.topText}>
                     <Text style={styles.nameText}>Hi, {name}</Text>
-                    <Text style={styles.descText}>Pemantauan kesehatan yang lebih cerdas untuk masa ddepan yang lebih sehat!</Text>
+                    <Text style={styles.descText}>Pemantauan kesehatan yang lebih cerdas untuk masa depan yang lebih sehat!</Text>
                 </View>
                 <Image source={require('@/assets/images/pfp.jpg')} style={styles.profilePic}/>
             </View>
@@ -123,18 +123,19 @@ const styles = StyleSheet.create({
         flex:1,
     },
     top:{
-        display:'flex',
+        marginTop:20,
         flexDirection:'row',
         justifyContent:'space-between',
         alignContent:'center',
         alignItems:'center',
         width:'92%',
         height:'25%',
+        alignSelf:'center',
     },
     topText:{
         margin:10,
         color:'#fff',
-        width:'50%'
+        width:'70%',
     },
     nameText:{
         color:'#fff',
@@ -144,11 +145,11 @@ const styles = StyleSheet.create({
     descText:{
         color:'#fff',
         fontFamily:'Poppins-Regular',
-        fontSize:10,
+        fontSize:13,
     },
     profilePic:{
-        width:55,
-        height:55,
+        width:60,
+        height:60,
         borderRadius:50,
         margin:10,
     },
