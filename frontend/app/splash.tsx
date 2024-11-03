@@ -12,8 +12,9 @@ export default function Splash() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Arahkan ke halaman Sign In setelah 2 detik
-      router.push('/sign-in'); 
+      // Arahkan ke halaman Sign In setelah 3 detik
+      router.replace('/sign-in');
+
     }, 3000);
     
     return () => clearTimeout(timer);
