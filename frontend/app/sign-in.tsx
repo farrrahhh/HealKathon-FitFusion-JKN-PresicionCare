@@ -20,16 +20,26 @@ export default function SignIn() {
       });
       if (response.status === 200) {
         console.log(response.data);
-        router.replace('/main'); // Arahkan ke halaman utama jika login berhasil
+        router.push('/main'); // Arahkan ke halaman utama jika login berhasil
       }
     } catch (error) {
-      setErrorMessage('Invalid username or password');
-      console.error(error);
+      const err = error as any;
+      if (err.response) {
+        // Server responded with a status other than 200 range
+        setErrorMessage('Invalid username or password');
+      } else if (err.request) {
+        // Request was made but no response received
+        setErrorMessage('Network error. Please try again later.');
+      } else {
+        // Something else happened
+        setErrorMessage('An unexpected error occurred.');
+      }
+      console.error(err);
     }
   };
 
   const handleSignUp = () => {
-    router.push('/sign-up'); // Ganti dengan rute ke halaman SignUp jika ada
+    router.push('/sign-up'); // Ensure this route exists in your application
   };
 
   const handlePressIn = () => {

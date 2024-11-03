@@ -30,7 +30,7 @@ app.post("/api/signup", async (req, res) => {
   try {
     connection = await connectToDatabase();
 
-    // Cek apakah username sudah ada
+    // Check if username already exists
     console.log("Checking for existing user with username:", username);
     const [existingUser] = await connection.execute("SELECT * FROM Users WHERE username = ?", [username]);
     if (existingUser.length > 0) {
@@ -41,7 +41,7 @@ app.post("/api/signup", async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Simpan pengguna baru
+    // Save new user
     const [result] = await connection.execute("INSERT INTO Users (username, password) VALUES (?, ?)", [username, hashedPassword]);
     const userId = result.insertId; // Get the inserted user ID
     console.log("User created successfully:", username);
@@ -52,7 +52,7 @@ app.post("/api/signup", async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   } finally {
     if (connection) {
-      await connection.end(); // Pastikan koneksi ditutup
+      await connection.end(); // Ensure the connection is closed
     }
   }
 });

@@ -1,16 +1,27 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, StatusBar, Image,  } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { router, useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 const ReportPage = () => {
+  
+  const router = useRouter();
+  const insets = useSafeAreaInsets(); // To get padding for safe area
+  const handleBack = () => {
+    router.push('../main');
+  }
   return (
     <View style={styles.container}>
       {/* Set StatusBar */}
       <StatusBar barStyle="light-content" backgroundColor="#273296" />
-
+      
       {/* Header with Back Icon and Centered Title */}
       <View style={styles.header}>
-        <FontAwesome name="arrow-left" size={24} color="white" style={styles.backIcon} />
+      <TouchableOpacity style={[styles.backButton, { top: insets.top - 5 }]} onPress={handleBack}>
+                <Image source={require('@/assets/images/back-button-white.png')} style={styles.backButtonImage} />
+          </TouchableOpacity>
         <Text style={styles.headerTitle}>Report</Text>
       </View>
 
@@ -70,6 +81,15 @@ const ReportPage = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#EFF8FF' },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    zIndex: 10,
+},
+backButtonImage: {
+    width: 20,
+    height: 20,
+},
 
   header: { 
     flexDirection: 'row', 

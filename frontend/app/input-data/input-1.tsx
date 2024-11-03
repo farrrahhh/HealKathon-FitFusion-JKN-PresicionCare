@@ -486,15 +486,18 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: '#133E87',
-    padding: 15,
+    padding: 5,
     borderRadius: 8,
     alignItems: 'center',
   },
-  buttonText: {
+  submitButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontFamily: 'Poppins-Semibold',
+  }
 
-  },
+
+
 });
 
 async function getUserIdFromSignUp(): Promise<string> {
